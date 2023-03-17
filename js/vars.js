@@ -3,11 +3,12 @@ var vars = {
 
     getScene: ()=> { return vars.Phaser.scene; },
 
-    version: 1,
+    version: 1.11,
 
     // APP
     App: {
         box: null,
+        connect: false,
         tracers: false,
 
         start: ()=> {
@@ -44,6 +45,9 @@ var vars = {
                         aV.tracers = !aV.tracers;
                         aV.tracersEnable(aV.tracers);
                     break;
+                    case 'V':
+                        aV.box.changeType();
+                    break;
                 }
             });
 
@@ -52,30 +56,12 @@ var vars = {
 
         inputCheck: ()=> {
             if (!vars.input.cursors) return;
-
             let aV = vars.App;
-            
             let cursors = vars.input.cursors
-            
-            if (cursors.right.isDown) {
-                aV.box.rotationSpeedIncrease();
-                return;
-            };
-
-            if (cursors.left.isDown) {
-                aV.box.rotationSpeedDecrease();
-                return;
-            };
-
-            if (cursors.up.isDown) {
-                aV.box.containerIncreaseScale();
-                return;
-            };
-
-            if (cursors.down.isDown) {
-                aV.box.containerDecreaseScale();
-                return;
-            };
+            if (cursors.right.isDown) { aV.box.rotationSpeedIncrease(); return; };
+            if (cursors.left.isDown) { aV.box.rotationSpeedDecrease(); return; };
+            if (cursors.up.isDown) { aV.box.containerIncreaseScale(); return; };
+            if (cursors.down.isDown) { aV.box.containerDecreaseScale(); return; };
         }
     },
 
@@ -90,7 +76,8 @@ var vars = {
             rotTitle: 'Use Left and Right Cursors to Increase or Decrease rotation speed',
             rotSpeed: 'Spinning [DIR] at [SPEED]',
             scaleText: 'Use Up and Down Cursors to Increase or Decrease box scale ([SCALE])',
-            tracers: 'Press T to enable or disable tracers'
+            tracers: 'Press T to enable or disable tracers',
+            box: 'Press V to swap between box and dots'
         },
         objects: { },
         init: ()=> {
@@ -107,13 +94,15 @@ var vars = {
             let line2 = scene.add.text(cC.cX, cC.height*0.80, msgs.rotSpeed.replace('[DIR]','RIGHT').replace('[SPEED]','5'), fontL).setOrigin(0.5);
             let line3 = scene.add.text(cC.cX, cC.height*0.85, msgs.scaleText.replace('[SCALE]','1'), fontL).setOrigin(0.5);
 
-            let line4 = scene.add.text(cC.cX, cC.height*0.95, msgs.tracers, fontL).setOrigin(0.5);
+            let line4 = scene.add.text(cC.cX, cC.height*0.90, msgs.tracers, fontL).setOrigin(0.5);
+            let line5 = scene.add.text(cC.cX, cC.height*0.95, msgs.box, fontL).setOrigin(0.5);
 
             UI.objects.instructions = {
                 rTitle: line1,
                 rSpeed: line2,
                 sText: line3,
-                tracers: line4
+                tracers: line4,
+                box: line5
             };
 
         },
